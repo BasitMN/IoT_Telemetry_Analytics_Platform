@@ -1,6 +1,5 @@
 # IoT Telemetry & Analytics Platform
 
-My solution for the assignment in the course *Dataplattformar, dataintegration och molnlösningar*.
 
 It's a small containerized microservice that takes in telemetry from IoT sensors
 (temperature, humidity, energy usage etc), saves it in a database and gives it back through
