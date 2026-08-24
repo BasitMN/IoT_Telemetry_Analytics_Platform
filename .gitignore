@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Docker / lokal build-cache
+.docker/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Skräpfiler
+openapi copy.yaml
+
+# Skräpfiler
+openapi copy min andra vertion måste rättas.yaml

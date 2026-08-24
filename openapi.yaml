@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: IoT Telemetry & Analytics API
+  description: API för mottagning och hantering av telemetridata från IoT-sensorer.
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Hälso-check för applikation och orkestrering
+      operationId: getHealth
+      responses:
+        '200':
+          description: Applikationen mår bra
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+
+  /openapi.json:
+    get:
+      summary: Exponerar OpenAPI-kontraktet i JSON-format (för Schemathesis)
+      operationId: getOpenapi
+      responses:
+        '200':
+          description: OpenAPI-kontraktet i JSON-format
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/v1/telemetry:
+    get:
+      summary: Hämta all telemetridata
+      operationId: getTelemetry
+      responses:
+        '200':
+          description: Lista med telemetriposter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TelemetryItem'
+
+    post:
+      summary: Rapportera ny telemetridata
+      operationId: postTelemetry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryInput'
+      responses:
+        '201':
+          description: Telemetridata skapad
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Telemetry data created successfully
+        '400':
+          description: Ogiltigt format eller saknade fält
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Obligatoriska fält saknas
+
+    TelemetryInput:
+      type: object
+      required:
+        - sensor_id
+        - metric_type
+        - value
+      properties:
+        sensor_id:
+          type: string
+          example: temp-sensor-01
+        metric_type:
+          type: string
+          example: temperature
+        value:
+          type: number
+          example: 22.5
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-08-19T20:00:00Z"
+
+    TelemetryItem:
+      type: object
+      required:
+        - id
+        - sensor_id
+        - metric_type
+        - value
+      properties:
+        id:
+          type: integer
+          example: 1
+        sensor_id:
+          type: string
+          example: temp-sensor-01
+        metric_type:
+          type: string
+          example: temperature
+        value:
+          type: number
+          example: 22.5
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-08-19T20:00:00Z"
